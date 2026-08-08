@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Fitness Coach</title>
+
+  <!-- Build-free frontend: this machine's Device Guard policy blocks native binaries
+       (esbuild/rolldown/mongod all fail identically), so there is no Vite/webpack here.
+       React + Babel run entirely inside the browser instead. -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone@7/babel.min.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1/dist/axios.min.js" crossorigin></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Applied before first paint (not in the React tree) so the page never flashes the
+    // wrong theme on load. Mirrors what the ThemeProvider in lib.js does on toggle.
+    (function () {
+      const saved = localStorage.getItem('theme');
+      const wantsDark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', wantsDark);
+    })();
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            // Bold coral/navy palette — primary brand color.
+            brand: {
+              50: '#fff1f1', 100: '#ffe1e2', 200: '#ffc7c9', 300: '#ffa0a4', 400: '#ff7a80',
+              500: '#ff5a5f', 600: '#f23a40', 700: '#d42129', 800: '#ac1a21', 900: '#7e1318',
+            },
+            // Amber accent for secondary highlights (streaks, warnings-as-highlight).
+            accent: {
+              50: '#fffbea', 100: '#fff3c4', 200: '#ffe58a', 300: '#ffd452', 400: '#ffc21f',
+              500: '#ffb800', 600: '#db9a00', 700: '#b37b00', 800: '#8c5f00', 900: '#6b4800',
+            },
+            // Slate is redefined (not just extended-alongside) with a navy tint instead of
+            // neutral gray, since slate-* is used everywhere for text/borders/surfaces —
+            // this single change re-tints the entire app's neutrals to match the new theme.
+            slate: {
+              50: '#f7f8fc', 100: '#eef0f8', 200: '#dde1ef', 300: '#c2c7de', 400: '#9aa1c4',
+              500: '#6b72a0', 600: '#565d85', 700: '#434967', 800: '#2e3350', 900: '#1a1e38', 950: '#0b132b',
+            },
+          },
+          keyframes: {
+            fadeUp: { '0%': { opacity: 0, transform: 'translateY(10px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+            fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+            popIn: { '0%': { opacity: 0, transform: 'scale(0.92)' }, '100%': { opacity: 1, transform: 'scale(1)' } },
+            slideInRight: { '0%': { opacity: 0, transform: 'translateX(16px)' }, '100%': { opacity: 1, transform: 'translateX(0)' } },
+            slideInUp: { '0%': { opacity: 0, transform: 'translateY(14px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+            shimmer: { '0%': { backgroundPosition: '-400px 0' }, '100%': { backgroundPosition: '400px 0' } },
+            gradientShift: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+            pulseGlow: { '0%,100%': { boxShadow: '0 0 0 0 rgba(255,90,95,0.45)' }, '50%': { boxShadow: '0 0 0 8px rgba(255,90,95,0)' } },
+            drawLine: { '0%': { strokeDashoffset: 1000 }, '100%': { strokeDashoffset: 0 } },
+            bounceSm: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-3px)' } },
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both',
+            'fade-in': 'fadeIn 0.4s ease both',
+            'pop-in': 'popIn 0.35s cubic-bezier(0.16,1,0.3,1) both',
+            'slide-in-right': 'slideInRight 0.35s cubic-bezier(0.16,1,0.3,1) both',
+            'slide-in-up': 'slideInUp 0.4s cubic-bezier(0.16,1,0.3,1) both',
+            shimmer: 'shimmer 1.6s infinite linear',
+            'gradient-shift': 'gradientShift 8s ease infinite',
+            'pulse-glow': 'pulseGlow 2.2s cubic-bezier(0.4,0,0.6,1) infinite',
+            'draw-line': 'drawLine 1.2s cubic-bezier(0.16,1,0.3,1) both',
+            'bounce-sm': 'bounceSm 0.6s ease-in-out infinite',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+
+    .bg-gradient-animated {
+      background: linear-gradient(120deg, #fff1f1, #ffe1e2, #f7f8fc, #fff3c4);
+      background-size: 200% 200%;
+    }
+    .dark .bg-gradient-animated {
+      background: linear-gradient(120deg, #1a1e38, #2e3350, #0b132b, #3d2418);
+      background-size: 200% 200%;
+    }
+    .shimmer-bg {
+      background-color: #eef0f8;
+      background-image: linear-gradient(90deg, transparent 0px, rgba(255,255,255,0.9) 40px, transparent 80px);
+      background-size: 800px 100%;
+      border: 1px solid #dde1ef;
+    }
+    .dark .shimmer-bg {
+      background-color: #2e3350;
+      background-image: linear-gradient(90deg, transparent 0px, rgba(255,255,255,0.12) 40px, transparent 80px);
+      border-color: #434967;
+    }
+
+    /* Glass surfaces — used sparingly on sidebars/headers/overlays, never on dense
+       data tables (blur behind text-heavy content hurts readability). */
+    .glass-light {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+    .dark .glass-light {
+      background: rgba(26, 30, 56, 0.75);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    .glass-dark {
+      background: rgba(11, 19, 43, 0.75);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #c2c7de; border-radius: 8px; }
+    ::-webkit-scrollbar-thumb:hover { background: #9aa1c4; }
+    .dark ::-webkit-scrollbar-thumb { background: #434967; }
+    .dark ::-webkit-scrollbar-thumb:hover { background: #565d85; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950">
+  <div id="root"></div>
+
+  <!-- ?v= cache-busts these on every deploy — plain <script src> with no build step
+       means browsers will otherwise keep serving a stale cached copy after edits. -->
+  <script type="text/babel" data-presets="react" src="/js/lib.js?v=6"></script>
+  <script type="text/babel" data-presets="react" src="/js/userPages.js?v=6"></script>
+  <script type="text/babel" data-presets="react" src="/js/adminPages.js?v=6"></script>
+  <script type="text/babel" data-presets="react" src="/js/main.js?v=6"></script>
+</body>
+</html>
