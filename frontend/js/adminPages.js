@@ -11,11 +11,11 @@ const ADMIN_LINKS = [
 function AdminLayout({ hash, children }) {
   const { user, logout } = useAuth();
   return (
-    <div className="flex min-h-screen bg-slate-950">
-      <aside className="glass-dark sticky top-0 flex h-screen w-64 flex-col border-r text-white">
-        <div className="flex items-center justify-between gap-2 px-6 py-5">
+    <div className="flex min-h-screen flex-col bg-slate-950 lg:flex-row">
+      <aside className="glass-dark sticky top-0 z-20 flex w-full flex-col border-b border-slate-800 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white shadow-[0_12px_30px_rgba(2,6,23,0.25)] lg:h-screen lg:w-64 lg:border-b-0 lg:border-r lg:shadow-[12px_0_35px_rgba(15,23,42,0.28)]">
+        <div className="flex items-center justify-between gap-2 px-4 py-4 sm:px-6 lg:py-5">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500 text-white shadow-lg shadow-brand-500/20"><FlameIcon size={18} /></div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-violet-600 text-white shadow-lg shadow-brand-500/20"><FlameIcon size={18} /></div>
             <div>
               <p className="text-sm font-semibold text-white">Admin Panel</p>
               <p className="text-xs text-slate-400">{user?.name}</p>
@@ -23,21 +23,23 @@ function AdminLayout({ hash, children }) {
           </div>
           <ThemeToggle className="text-slate-400 hover:text-white" />
         </div>
-        <nav className="flex-1 space-y-1 px-3">
-          {ADMIN_LINKS.map((l, i) => (
-            <a
-              key={l.to}
-              href={l.to}
-              className={`relative block rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 animate-fade-up ${hash === l.to ? 'bg-brand-500/10 text-brand-400 translate-x-0.5' : 'text-slate-300 hover:translate-x-0.5 hover:bg-slate-800'}`}
-              style={{ animationDelay: `${i * 30}ms` }}
-            >
-              {hash === l.to && <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-brand-400" />}
-              {l.label}
-            </a>
-          ))}
+        <nav className="flex-1 space-x-2 overflow-x-auto px-3 pb-3 pt-1 lg:space-x-0 lg:space-y-1 lg:overflow-visible lg:px-3 lg:pb-0 lg:pt-0">
+          <div className="flex min-w-max gap-1 lg:flex-col">
+            {ADMIN_LINKS.map((l, i) => (
+              <a
+                key={l.to}
+                href={l.to}
+                className={`relative block rounded-xl px-3 py-2.5 text-sm font-medium whitespace-nowrap transition-all duration-150 animate-fade-up ${hash === l.to ? 'translate-x-0.5 bg-gradient-to-r from-brand-500/10 via-violet-500/10 to-slate-800 text-brand-400 ring-1 ring-brand-500/20' : 'text-slate-300 hover:translate-x-0.5 hover:bg-slate-800'}`}
+                style={{ animationDelay: `${i * 30}ms` }}
+              >
+                {hash === l.to && <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-gradient-to-b from-brand-400 to-violet-400" />}
+                {l.label}
+              </a>
+            ))}
+          </div>
         </nav>
         <div className="border-t border-slate-800 p-3">
-          <button onClick={logout} className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-300 transition hover:bg-rose-500/10 hover:text-rose-400">Log out</button>
+          <button onClick={logout} className="w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-300 transition hover:bg-rose-500/10 hover:text-rose-400">Log out</button>
         </div>
       </aside>
       <main className="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-950">{children}</main>

@@ -27,22 +27,18 @@
       theme: {
         extend: {
           colors: {
-            // Bold coral/navy palette — primary brand color.
+            // Rich premium palette: blush pink to violet with cool navy neutrals.
             brand: {
-              50: '#fff1f1', 100: '#ffe1e2', 200: '#ffc7c9', 300: '#ffa0a4', 400: '#ff7a80',
-              500: '#ff5a5f', 600: '#f23a40', 700: '#d42129', 800: '#ac1a21', 900: '#7e1318',
+              50: '#fff5fb', 100: '#fce7f3', 200: '#f9cfe7', 300: '#f7b3d7', 400: '#f78ac2',
+              500: '#f25aa8', 600: '#df3f95', 700: '#bc2f7c', 800: '#8f245f', 900: '#641a43',
             },
-            // Amber accent for secondary highlights (streaks, warnings-as-highlight).
             accent: {
-              50: '#fffbea', 100: '#fff3c4', 200: '#ffe58a', 300: '#ffd452', 400: '#ffc21f',
-              500: '#ffb800', 600: '#db9a00', 700: '#b37b00', 800: '#8c5f00', 900: '#6b4800',
+              50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4', 400: '#2dd4bf',
+              500: '#14b8a6', 600: '#0d9488', 700: '#0f766e', 800: '#115e59', 900: '#134e4a',
             },
-            // Slate is redefined (not just extended-alongside) with a navy tint instead of
-            // neutral gray, since slate-* is used everywhere for text/borders/surfaces —
-            // this single change re-tints the entire app's neutrals to match the new theme.
             slate: {
-              50: '#f7f8fc', 100: '#eef0f8', 200: '#dde1ef', 300: '#c2c7de', 400: '#9aa1c4',
-              500: '#6b72a0', 600: '#565d85', 700: '#434967', 800: '#2e3350', 900: '#1a1e38', 950: '#0b132b',
+              50: '#f8fafc', 100: '#eef3ff', 200: '#dfe7f7', 300: '#c1cee8', 400: '#9aa7c9',
+              500: '#6c7aa8', 600: '#4d5f8d', 700: '#39496f', 800: '#1f2b4d', 900: '#101a36', 950: '#0a1329',
             },
           },
           keyframes: {
@@ -74,53 +70,114 @@
     };
   </script>
   <style>
-    body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    :root {
+      --brand-1: #fff5fb;
+      --brand-2: #f9cfe7;
+      --brand-3: #f25aa8;
+      --brand-4: #df3f95;
+      --brand-5: #101a36;
+      --surface-1: rgba(255, 255, 255, 0.78);
+      --surface-2: rgba(249, 250, 255, 0.9);
+      --surface-3: rgba(19, 29, 52, 0.76);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top left, #fff7fb 0%, #eef4ff 28%, #edfdf9 100%);
+      color: #101a36;
+    }
+    .dark body {
+      background: radial-gradient(circle at top left, #0f172a 0%, #101a36 32%, #070d1a 100%);
+      color: #e2e8f0;
+    }
+    #root { min-height: 100vh; }
 
     .bg-gradient-animated {
-      background: linear-gradient(120deg, #fff1f1, #ffe1e2, #f7f8fc, #fff3c4);
+      background: linear-gradient(135deg, #fff5fb 0%, #eef4ff 25%, #ecfeff 50%, #fff3d8 100%);
       background-size: 200% 200%;
     }
     .dark .bg-gradient-animated {
-      background: linear-gradient(120deg, #1a1e38, #2e3350, #0b132b, #3d2418);
+      background: linear-gradient(135deg, #0f172a 0%, #111827 30%, #101a36 60%, #1c233e 100%);
       background-size: 200% 200%;
     }
     .shimmer-bg {
-      background-color: #eef0f8;
+      background-color: #edf3ff;
       background-image: linear-gradient(90deg, transparent 0px, rgba(255,255,255,0.9) 40px, transparent 80px);
       background-size: 800px 100%;
-      border: 1px solid #dde1ef;
+      border: 1px solid #dfe7f7;
     }
     .dark .shimmer-bg {
-      background-color: #2e3350;
+      background-color: #1f2b4d;
       background-image: linear-gradient(90deg, transparent 0px, rgba(255,255,255,0.12) 40px, transparent 80px);
-      border-color: #434967;
+      border-color: #39496f;
     }
 
-    /* Glass surfaces — used sparingly on sidebars/headers/overlays, never on dense
-       data tables (blur behind text-heavy content hurts readability). */
     .glass-light {
       background: rgba(255, 255, 255, 0.72);
-      backdrop-filter: blur(16px) saturate(160%);
-      -webkit-backdrop-filter: blur(16px) saturate(160%);
-      border-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 12px 40px rgba(16, 26, 54, 0.08);
     }
     .dark .glass-light {
-      background: rgba(26, 30, 56, 0.75);
+      background: rgba(16, 26, 54, 0.72);
       border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 14px 42px rgba(2, 6, 23, 0.45);
     }
     .glass-dark {
-      background: rgba(11, 19, 43, 0.75);
-      backdrop-filter: blur(16px) saturate(160%);
-      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      background: rgba(9, 14, 30, 0.8);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
       border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 18px 44px rgba(2, 6, 23, 0.45);
+    }
+    .auth-shell {
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-shell::before,
+    .auth-shell::after {
+      content: "";
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(18px);
+      opacity: 0.72;
+      pointer-events: none;
+    }
+    .auth-shell::before {
+      width: 18rem;
+      height: 18rem;
+      right: -5rem;
+      top: -4rem;
+      background: rgba(242, 90, 168, 0.2);
+    }
+    .auth-shell::after {
+      width: 16rem;
+      height: 16rem;
+      left: -4rem;
+      bottom: -5rem;
+      background: rgba(45, 212, 191, 0.2);
+    }
+    .auth-card {
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.76));
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.14);
+    }
+    .dark .auth-card {
+      background: linear-gradient(180deg, rgba(16,26,54,0.82), rgba(18,25,49,0.74));
+      border-color: rgba(255,255,255,0.08);
+      box-shadow: 0 28px 64px rgba(2, 6, 23, 0.4);
     }
 
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #c2c7de; border-radius: 8px; }
-    ::-webkit-scrollbar-thumb:hover { background: #9aa1c4; }
-    .dark ::-webkit-scrollbar-thumb { background: #434967; }
-    .dark ::-webkit-scrollbar-thumb:hover { background: #565d85; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d9dff7, #b9c5eb); border-radius: 8px; }
+    ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #bfd0ff, #9caee6); }
+    .dark ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #39496f, #1f2b4d); }
+    .dark ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #4d5f8d, #2f3d63); }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }

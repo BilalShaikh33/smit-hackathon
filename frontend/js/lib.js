@@ -115,7 +115,7 @@ function ThemeToggle({ className = '' }) {
     <button
       onClick={toggleTheme}
       title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-      className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-slate-500/10 ${className}`}
+      className={`flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-700 shadow-sm ring-1 ring-slate-200/60 transition-all duration-150 hover:-translate-y-0.5 hover:border-brand-200 hover:text-brand-600 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-200 dark:ring-slate-700/80 dark:hover:border-brand-500/40 dark:hover:text-brand-300 ${className}`}
     >
       {theme === 'dark'
         ? <Icon path="M12 3v1m0 16v1m9-9h-1M4 12H3m15.36 6.36l-.71-.71M6.34 6.34l-.71-.71m12.02 0l-.71.71M6.34 17.66l-.71.71M12 7a5 5 0 100 10 5 5 0 000-10z" size={18} />
@@ -165,9 +165,9 @@ window.App.FlameIcon = FlameIcon;
 // ---------------- Shared UI ----------------
 function PageHeader({ title, subtitle, action }) {
   return (
-    <div className="glass-light sticky top-0 z-10 flex flex-wrap items-start justify-between gap-4 border-b px-8 py-6 animate-fade-up">
+    <div className="glass-light sticky top-0 z-10 flex flex-wrap items-start justify-between gap-3 border border-slate-200/80 bg-white/75 px-4 py-5 backdrop-blur-xl animate-fade-up sm:px-8 sm:py-6 dark:border-slate-800/80 dark:bg-slate-900/70">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">{title}</h1>
+        <h1 className="text-lg font-semibold tracking-tight text-slate-900 sm:text-xl dark:text-slate-50">{title}</h1>
         {subtitle && <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>}
       </div>
       {action}
@@ -178,7 +178,7 @@ function PageHeader({ title, subtitle, action }) {
 function Card({ children, className = '', style, delay }) {
   return (
     <div
-      className={`rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md animate-fade-up dark:border-slate-800 dark:bg-slate-900 dark:shadow-none ${className}`}
+      className={`rounded-2xl border border-slate-200/80 bg-gradient-to-br from-white via-white to-slate-50/80 p-5 shadow-[0_10px_35px_rgba(15,23,42,0.08)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(15,23,42,0.12)] animate-fade-up dark:border-slate-800 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 ${className}`}
       style={delay !== undefined ? { animationDelay: `${delay}ms`, ...style } : style}
     >
       {children}
@@ -208,19 +208,19 @@ function AnimatedNumber({ value, duration = 700, suffix = '' }) {
 
 function StatTile({ label, value, suffix = '', hint, tone = 'brand', delay }) {
   const tones = {
-    brand: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400',
-    amber: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
-    rose: 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400',
-    slate: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300',
+    brand: 'bg-gradient-to-br from-brand-100 to-pink-100 text-brand-600 shadow-brand-100/60 dark:from-brand-500/15 dark:to-violet-500/10 dark:text-brand-400',
+    amber: 'bg-gradient-to-br from-amber-100 to-yellow-100 text-amber-600 shadow-amber-100/60 dark:from-amber-500/10 dark:to-yellow-500/5 dark:text-amber-400',
+    rose: 'bg-gradient-to-br from-rose-100 to-pink-100 text-rose-600 shadow-rose-100/60 dark:from-rose-500/10 dark:to-pink-500/5 dark:text-rose-400',
+    slate: 'bg-gradient-to-br from-slate-100 to-slate-200 text-slate-600 dark:from-slate-800 dark:to-slate-700 dark:text-slate-300',
   };
   const isNumeric = typeof value === 'number';
   return (
     <Card className="group flex items-center gap-4" delay={delay}>
-      <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-lg font-bold transition-transform duration-200 group-hover:scale-110 ${tones[tone]}`}>{label[0]}</div>
+      <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-lg font-bold shadow-inner transition-transform duration-200 group-hover:scale-110 ${tones[tone]}`}>{label[0]}</div>
       <div>
-        <p className="text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">{label}</p>
-        <p className="text-2xl font-semibold text-slate-900 dark:text-slate-50">{isNumeric ? <AnimatedNumber value={value} suffix={suffix} /> : value}</p>
-        {hint && <p className="text-xs text-slate-400 dark:text-slate-500">{hint}</p>}
+        <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">{label}</p>
+        <p className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50">{isNumeric ? <AnimatedNumber value={value} suffix={suffix} /> : value}</p>
+        {hint && <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">{hint}</p>}
       </div>
     </Card>
   );
@@ -228,13 +228,13 @@ function StatTile({ label, value, suffix = '', hint, tone = 'brand', delay }) {
 
 function Badge({ children, tone = 'slate' }) {
   const tones = {
-    slate: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300',
-    green: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400',
-    red: 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400',
-    amber: 'bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400',
-    brand: 'bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400',
+    slate: 'bg-slate-100 text-slate-600 ring-1 ring-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700',
+    green: 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20',
+    red: 'bg-rose-50 text-rose-700 ring-1 ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20',
+    amber: 'bg-amber-50 text-amber-700 ring-1 ring-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20',
+    brand: 'bg-brand-50 text-brand-700 ring-1 ring-brand-200 dark:bg-brand-500/10 dark:text-brand-300 dark:ring-brand-500/20',
   };
-  return <span className={`inline-block animate-pop-in rounded-full px-2.5 py-1 text-xs font-medium ${tones[tone]}`}>{children}</span>;
+  return <span className={`inline-block animate-pop-in rounded-full px-2.5 py-1 text-xs font-semibold tracking-wide ${tones[tone]}`}>{children}</span>;
 }
 
 function Spinner({ className = '' }) {
@@ -248,14 +248,14 @@ function Spinner({ className = '' }) {
 
 function Button({ children, variant = 'primary', className = '', loading = false, disabled, ...props }) {
   const variants = {
-    primary: 'bg-brand-600 text-white hover:bg-brand-700 shadow-sm hover:shadow-md disabled:opacity-50',
-    secondary: 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:border-slate-400 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700 dark:hover:bg-slate-700',
-    danger: 'bg-rose-600 text-white hover:bg-rose-700 shadow-sm hover:shadow-md disabled:opacity-50',
+    primary: 'bg-gradient-to-r from-brand-500 via-pink-500 to-violet-600 text-white shadow-[0_10px_22px_rgba(242,90,168,0.35)] hover:shadow-[0_16px_26px_rgba(242,90,168,0.42)] disabled:opacity-50',
+    secondary: 'bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-slate-50 hover:border-slate-300 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700 dark:hover:bg-slate-700',
+    danger: 'bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-[0_10px_22px_rgba(244,63,94,0.25)] hover:shadow-[0_16px_26px_rgba(244,63,94,0.32)] disabled:opacity-50',
     ghost: 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800',
   };
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-150 active:scale-95 disabled:cursor-not-allowed disabled:active:scale-100 ${variants[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-150 active:scale-95 disabled:cursor-not-allowed disabled:active:scale-100 ${variants[variant]} ${className}`}
       disabled={disabled || loading}
       {...props}
     >
@@ -268,8 +268,8 @@ function Button({ children, variant = 'primary', className = '', loading = false
 function Input({ label, className = '', ...props }) {
   return (
     <label className="block">
-      {label && <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">{label}</span>}
-      <input className={`w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition-all duration-150 placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 ${className}`} {...props} />
+      {label && <span className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">{label}</span>}
+      <input className={`w-full rounded-xl border border-slate-200 bg-white/90 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition-all duration-150 placeholder:text-slate-400 focus:border-brand-400 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-800/90 dark:text-slate-100 dark:placeholder:text-slate-500 ${className}`} {...props} />
     </label>
   );
 }
@@ -277,8 +277,8 @@ function Input({ label, className = '', ...props }) {
 function Select({ label, className = '', children, ...props }) {
   return (
     <label className="block">
-      {label && <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">{label}</span>}
-      <select className={`w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition-all duration-150 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 ${className}`} {...props}>
+      {label && <span className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">{label}</span>}
+      <select className={`w-full rounded-xl border border-slate-200 bg-white/90 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition-all duration-150 focus:border-brand-400 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-800/90 dark:text-slate-100 ${className}`} {...props}>
         {children}
       </select>
     </label>

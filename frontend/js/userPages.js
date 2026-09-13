@@ -26,20 +26,22 @@ function Login() {
   };
 
   return (
-    <div className="bg-gradient-animated animate-gradient-shift flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-sm animate-fade-up">
-        <div className="mb-8 flex flex-col items-center gap-2">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 text-white shadow-lg shadow-brand-500/30 animate-pulse-glow"><FlameIcon size={26} /></div>
-          <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-50">AI Fitness Coach</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Sign in to your account</p>
+    <div className="auth-shell bg-gradient-animated animate-gradient-shift flex min-h-screen items-center justify-center px-4 py-10">
+      <div className="w-full max-w-md animate-fade-up">
+        <div className="mb-8 flex flex-col items-center gap-3 text-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 via-pink-500 to-violet-600 text-white shadow-[0_18px_35px_rgba(242,90,168,0.35)] animate-pulse-glow"><FlameIcon size={28} /></div>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">AI Fitness Coach</h1>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Sign in to your account</p>
+          </div>
         </div>
-        <form onSubmit={submit} className="animate-pop-in space-y-4 glass-light rounded-xl border p-6 shadow-xl" style={{ animationDelay: '100ms' }}>
-          {error && <p className="animate-slide-in-right rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-600 dark:bg-rose-500/10 dark:text-rose-400">{error}</p>}
+        <form onSubmit={submit} className="auth-card animate-pop-in space-y-4 rounded-[28px] border p-6 md:p-7" style={{ animationDelay: '100ms' }}>
+          {error && <p className="animate-slide-in-right rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-600 ring-1 ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20">{error}</p>}
           <Input label="Email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
           <Input label="Password" type="password" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
           <Button type="submit" className="w-full" loading={loading}>{loading ? 'Signing in…' : 'Sign in'}</Button>
         </form>
-        <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">No account? <Link to="/signup" className="font-medium text-brand-600 transition hover:text-brand-700 dark:text-brand-400">Sign up</Link></p>
+        <p className="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">No account? <Link to="/signup" className="font-semibold text-brand-600 transition hover:text-brand-700 dark:text-brand-400">Sign up</Link></p>
         <p className="mt-2 text-center text-xs text-slate-400 dark:text-slate-500">Admin demo: admin@fitcoach.ai / Admin@123</p>
       </div>
     </div>
@@ -67,21 +69,23 @@ function Signup() {
   };
 
   return (
-    <div className="bg-gradient-animated animate-gradient-shift flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-sm animate-fade-up">
-        <div className="mb-8 flex flex-col items-center gap-2">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 text-white shadow-lg shadow-brand-500/30 animate-pulse-glow"><FlameIcon size={26} /></div>
-          <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-50">Create your account</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Start your personalized fitness journey</p>
+    <div className="auth-shell bg-gradient-animated animate-gradient-shift flex min-h-screen items-center justify-center px-4 py-10">
+      <div className="w-full max-w-md animate-fade-up">
+        <div className="mb-8 flex flex-col items-center gap-3 text-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 via-pink-500 to-violet-600 text-white shadow-[0_18px_35px_rgba(242,90,168,0.35)] animate-pulse-glow"><FlameIcon size={28} /></div>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Create your account</h1>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Start your personalized fitness journey</p>
+          </div>
         </div>
-        <form onSubmit={submit} className="animate-pop-in space-y-4 glass-light rounded-xl border p-6 shadow-xl" style={{ animationDelay: '100ms' }}>
-          {error && <p className="animate-slide-in-right rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-600 dark:bg-rose-500/10 dark:text-rose-400">{error}</p>}
+        <form onSubmit={submit} className="auth-card animate-pop-in space-y-4 rounded-[28px] border p-6 md:p-7" style={{ animationDelay: '100ms' }}>
+          {error && <p className="animate-slide-in-right rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-600 ring-1 ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20">{error}</p>}
           <Input label="Full name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
           <Input label="Email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
           <Input label="Password" type="password" required minLength={6} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
           <Button type="submit" className="w-full" loading={loading}>{loading ? 'Creating…' : 'Create account'}</Button>
         </form>
-        <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">Already have an account? <Link to="/login" className="font-medium text-brand-600 transition hover:text-brand-700 dark:text-brand-400">Sign in</Link></p>
+        <p className="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">Already have an account? <Link to="/login" className="font-semibold text-brand-600 transition hover:text-brand-700 dark:text-brand-400">Sign in</Link></p>
       </div>
     </div>
   );
@@ -103,11 +107,11 @@ function UserLayout({ hash, children }) {
   const { user, logout } = useAuth();
   const hasStreak = (user?.currentStreak || 0) > 0;
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
-      <aside className="glass-light sticky top-0 flex h-screen w-64 flex-col border-r">
-        <div className="flex items-center justify-between gap-2 px-6 py-5">
+    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-slate-950 lg:flex-row">
+      <aside className="glass-light sticky top-0 z-20 flex w-full flex-col border-b border-slate-200/80 bg-gradient-to-b from-white/90 via-slate-50/90 to-white/80 shadow-[0_12px_30px_rgba(15,23,42,0.05)] dark:border-slate-800 dark:from-slate-900/90 dark:via-slate-900/95 dark:to-slate-950/90 lg:h-screen lg:w-64 lg:border-b-0 lg:border-r lg:shadow-[12px_0_35px_rgba(15,23,42,0.05)]">
+        <div className="flex items-center justify-between gap-2 px-4 py-4 sm:px-6 lg:py-5">
           <div className="flex items-center gap-2">
-            <div className={`flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500 text-white transition-shadow ${hasStreak ? 'animate-pulse-glow shadow-lg shadow-brand-500/30' : ''}`}><FlameIcon size={18} /></div>
+            <div className={`flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-violet-600 text-white shadow-lg shadow-brand-500/30 transition-shadow ${hasStreak ? 'animate-pulse-glow' : ''}`}><FlameIcon size={18} /></div>
             <div>
               <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">AI Fitness Coach</p>
               <p className="text-xs text-slate-400 dark:text-slate-500">{user?.name}</p>
@@ -115,21 +119,23 @@ function UserLayout({ hash, children }) {
           </div>
           <ThemeToggle className="text-slate-500 dark:text-slate-400" />
         </div>
-        <nav className="flex-1 space-y-1 px-3">
-          {USER_LINKS.map((l, i) => (
-            <a
-              key={l.to}
-              href={l.to}
-              className={`relative block rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 animate-fade-up ${hash === l.to ? 'bg-brand-50 text-brand-700 translate-x-0.5 dark:bg-brand-500/10 dark:text-brand-400' : 'text-slate-600 hover:translate-x-0.5 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'}`}
-              style={{ animationDelay: `${i * 30}ms` }}
-            >
-              {hash === l.to && <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-brand-600" />}
-              {l.label}
-            </a>
-          ))}
+        <nav className="flex-1 space-x-2 overflow-x-auto px-3 pb-3 pt-1 lg:space-x-0 lg:space-y-1 lg:overflow-visible lg:px-3 lg:pb-0 lg:pt-0">
+          <div className="flex min-w-max gap-1 lg:flex-col">
+            {USER_LINKS.map((l, i) => (
+              <a
+                key={l.to}
+                href={l.to}
+                className={`relative block rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 animate-fade-up whitespace-nowrap ${hash === l.to ? 'translate-x-0.5 bg-gradient-to-r from-brand-50 via-pink-50 to-violet-50 text-brand-700 shadow-sm ring-1 ring-brand-100 dark:from-brand-500/10 dark:via-violet-500/10 dark:to-slate-800 dark:text-brand-400 dark:ring-brand-500/15' : 'text-slate-600 hover:translate-x-0.5 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'}`}
+                style={{ animationDelay: `${i * 30}ms` }}
+              >
+                {hash === l.to && <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-gradient-to-b from-brand-500 to-violet-500" />}
+                {l.label}
+              </a>
+            ))}
+          </div>
         </nav>
-        <div className="border-t border-slate-200 p-3 dark:border-slate-800">
-          <button onClick={logout} className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-600 transition hover:bg-rose-50 hover:text-rose-600 dark:text-slate-300 dark:hover:bg-rose-500/10 dark:hover:text-rose-400">Log out</button>
+        <div className="border-t border-slate-200/80 p-3 dark:border-slate-800">
+          <button onClick={logout} className="w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-600 transition hover:bg-rose-50 hover:text-rose-600 dark:text-slate-300 dark:hover:bg-rose-500/10 dark:hover:text-rose-400">Log out</button>
         </div>
       </aside>
       <main className="flex-1 overflow-y-auto">{children}</main>
